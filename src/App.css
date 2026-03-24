@@ -1,0 +1,19 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Desktop: add left margin for sidebar nav */
+@media (min-width: 768px) {
+  .app-container {
+    margin-left: 220px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .app-container {
+    margin-left: 260px;
+  }
+}

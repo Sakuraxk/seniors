@@ -1,0 +1,327 @@
+.chat-risk-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* Chat header */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 140, 66, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.chat-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.2);
+}
+
+.chat-user-info {
+  flex: 1;
+}
+
+.chat-user-name {
+  font-size: var(--font-base);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.chat-user-status {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.chat-header-badge {
+  flex-shrink: 0;
+}
+
+/* Warning area */
+.chat-warning-area {
+  padding: 12px 20px;
+}
+
+/* Risk levels */
+.risk-levels-section {
+  padding: 12px 20px 16px;
+}
+
+.risk-levels-title {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.risk-levels {
+  display: flex;
+  gap: 8px;
+}
+
+.risk-level-card {
+  flex: 1;
+  text-align: center;
+  padding: 10px 6px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 140, 66, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(180, 120, 60, 0.04);
+  transition: all 0.3s ease;
+}
+
+.risk-level-card:hover {
+  border-color: rgba(255, 107, 53, 0.2);
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.08);
+}
+
+.level-num {
+  display: block;
+  font-size: var(--font-sm);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2px;
+}
+
+.level-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Messages */
+.chat-messages {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.chat-bubble-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+}
+
+.chat-bubble-wrapper.other {
+  align-self: flex-start;
+}
+
+.chat-bubble-wrapper.me {
+  align-self: flex-end;
+}
+
+.chat-bubble {
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-sm);
+  line-height: 1.6;
+  word-break: break-word;
+  color: var(--text-primary);
+}
+
+.chat-bubble-wrapper.other .chat-bubble {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 8px rgba(180, 120, 60, 0.04);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble-wrapper.me .chat-bubble {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.12), rgba(255, 179, 71, 0.08));
+  border: 1px solid rgba(255, 107, 53, 0.15);
+  border-bottom-right-radius: 4px;
+}
+
+/* Risk tagged bubbles */
+.chat-bubble.risk-medium {
+  border-color: rgba(221, 107, 32, 0.3);
+  background: rgba(255, 200, 100, 0.12);
+}
+
+.chat-bubble.risk-high {
+  border-color: rgba(229, 62, 62, 0.3);
+  background: rgba(229, 62, 62, 0.08);
+  animation: riskPulse 2s ease-in-out infinite;
+}
+
+@keyframes riskPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.08); }
+  50% { box-shadow: 0 0 12px rgba(229, 62, 62, 0.12); }
+}
+
+.risk-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-top: 4px;
+  width: fit-content;
+}
+
+.risk-tag.medium {
+  background: rgba(221, 107, 32, 0.1);
+  color: var(--warning);
+}
+
+.risk-tag.high {
+  background: rgba(229, 62, 62, 0.1);
+  color: var(--danger);
+  animation: riskTagBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes riskTagBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.chat-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Chat actions */
+.chat-actions {
+  padding: 12px 20px 24px;
+  background: rgba(255, 248, 240, 0.85);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 140, 66, 0.08);
+  position: sticky;
+  bottom: 0;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 140, 66, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: var(--font-sm);
+  outline: none;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.chat-input:focus {
+  border-color: rgba(255, 107, 53, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.08);
+}
+
+.chat-input::placeholder {
+  color: var(--text-muted);
+}
+
+.chat-send-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
+  transition: all 0.3s;
+}
+
+.chat-send-btn svg {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+
+.chat-send-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(255, 107, 53, 0.35);
+}
+
+/* Quick actions */
+.quick-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.quick-action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.quick-action-btn.block {
+  background: rgba(229, 62, 62, 0.08);
+  color: var(--danger);
+  border: 1px solid rgba(229, 62, 62, 0.15);
+}
+
+.quick-action-btn.report {
+  background: rgba(221, 107, 32, 0.08);
+  color: var(--warning);
+  border: 1px solid rgba(221, 107, 32, 0.15);
+}
+
+.quick-action-btn.help {
+  background: rgba(49, 130, 206, 0.08);
+  color: var(--info);
+  border: 1px solid rgba(49, 130, 206, 0.15);
+}
+
+.quick-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 768px) {
+
+  .chat-bubble {
+    padding: 14px 20px;
+  }
+
+  .chat-bubble-wrapper {
+    max-width: 65%;
+  }
+
+  .risk-levels {
+    gap: 12px;
+  }
+}

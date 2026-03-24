@@ -1,0 +1,32 @@
+.cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cert-badge.green {
+  background: rgba(76, 175, 80, 0.1);
+  color: var(--green-card);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.cert-badge.gold {
+  background: rgba(245, 166, 35, 0.1);
+  color: var(--gold-card);
+  border: 1px solid rgba(245, 166, 35, 0.2);
+}
+
+.cert-badge.blue {
+  background: rgba(33, 150, 243, 0.08);
+  color: var(--blue-shield);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.cert-badge svg {
+  width: 12px;
+  height: 12px;
+}

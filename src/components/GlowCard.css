@@ -1,0 +1,75 @@
+.glow-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 4px 24px rgba(255, 140, 66, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.glow-card:hover {
+  border-color: rgba(255, 107, 53, 0.3);
+  box-shadow:
+    0 8px 40px rgba(255, 140, 66, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Mouse-tracking highlight */
+.glow-card-highlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    250px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    var(--glow-color, rgba(255, 107, 53, 0.15)),
+    transparent 70%
+  );
+  z-index: 0;
+}
+
+.glow-card:hover .glow-card-highlight {
+  opacity: 1;
+}
+
+.glow-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Animated border shimmer */
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    transparent 20%,
+    rgba(255, 140, 66, 0.2) 40%,
+    rgba(255, 179, 71, 0.15) 60%,
+    transparent 80%
+  );
+  background-size: 300% 300%;
+  z-index: -1;
+  opacity: 0;
+  animation: glow-border-shimmer 4s ease-in-out infinite;
+  transition: opacity 0.35s ease;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+@keyframes glow-border-shimmer {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
