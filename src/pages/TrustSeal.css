@@ -345,6 +345,148 @@
   color: var(--success);
 }
 
+/* ===== Cert Share Actions ===== */
+.cert-share-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cert-share-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 16px;
+  min-height: 48px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 140, 66, 0.2);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cert-share-btn:hover {
+  background: rgba(255, 140, 66, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+}
+
+.cert-share-btn:active {
+  transform: translateY(0);
+  background: rgba(255, 140, 66, 0.15);
+}
+
+/* Cert Expired Notice */
+.cert-expired-notice {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--text-secondary);
+}
+
+.cert-expired-notice svg {
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.cert-expired-notice h3 {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.cert-expired-notice p {
+  font-size: var(--font-sm);
+  line-height: 1.6;
+}
+
+/* ===== Cert History Section ===== */
+.cert-history-section {
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  margin-bottom: 24px;
+}
+
+.cert-history-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.cert-history-title svg {
+  color: var(--primary);
+}
+
+.cert-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cert-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+}
+
+.cert-history-item:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.cert-history-item.expired {
+  opacity: 0.7;
+}
+
+.ch-left {
+  flex: 1;
+}
+
+.ch-name {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ch-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.ch-right {
+  text-align: right;
+}
+
+.ch-status {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  display: block;
+}
+
+.ch-views {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+}
+
 /* ===== Desktop ===== */
 @media (min-width: 768px) {
   .trust-seal-page {

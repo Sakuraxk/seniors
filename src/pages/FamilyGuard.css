@@ -467,6 +467,231 @@
   transform: scale(0.97);
 }
 
+/* Add Guardian Button */
+.add-guardian-btn {
+  margin-left: auto;
+  background: rgba(255, 107, 53, 0.08);
+  color: var(--primary);
+  border: 1px solid rgba(255, 107, 53, 0.15);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-guardian-btn:hover {
+  background: rgba(255, 107, 53, 0.15);
+}
+
+/* Permission Section */
+.permission-section {
+  margin-bottom: 24px;
+}
+
+.permission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.perm-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 107, 53, 0.08);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.perm-info {
+  flex: 1;
+}
+
+.perm-label {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.perm-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.perm-toggle {
+  width: 48px;
+  height: 28px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.perm-toggle::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.perm-toggle.on {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+.perm-toggle.on::after {
+  transform: translateX(20px);
+}
+
+.perm-toggle.off {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Risk Sync Records */
+.sync-section {
+  margin-bottom: 24px;
+}
+
+.sync-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sync-card {
+  padding: 14px 16px;
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.sync-card.pending {
+  border-left: 3px solid #FF9800;
+}
+
+.sync-card.handled {
+  border-left: 3px solid #4CAF50;
+}
+
+.sync-content {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.sync-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.sync-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.sync-status.handled {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.sync-status.pending {
+  background: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+/* Bind Modal */
+.bind-modal {
+  max-width: 380px;
+}
+
+.bind-instruction {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.bind-input-row {
+  margin-bottom: 16px;
+}
+
+.bind-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: var(--font-base);
+  outline: none;
+  transition: border 0.2s;
+  box-sizing: border-box;
+}
+
+.bind-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.08);
+}
+
+.bind-send-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.bind-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.bind-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background: rgba(76, 175, 80, 0.08);
+  color: #4CAF50;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: var(--font-sm);
+}
+
 /* ===== Desktop ===== */
 @media (min-width: 768px) {
   .family-guard-page {

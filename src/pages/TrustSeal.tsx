@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Stamp, ShieldCheck, Lock, Check, Clock, Eye, ArrowLeft } from 'lucide-react';
+import { Stamp, ShieldCheck, Lock, Check, Clock, Eye, ArrowLeft, Copy, QrCode, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import StepIndicator from '../components/StepIndicator';
-import { trustSealSteps, trustSealCertificate, type TrustSealStep } from '../data/mockData';
+import { trustSealSteps, trustSealCertificate, certHistory, type TrustSealStep } from '../data/mockData';
 import './TrustSeal.css';
 
 export default function TrustSeal() {
@@ -11,6 +11,9 @@ export default function TrustSeal() {
   const [hasStarted, setHasStarted] = useState(false);
   const [steps, setSteps] = useState<TrustSealStep[]>(trustSealSteps);
   const [showCert, setShowCert] = useState(false);
+  const [viewCount, setViewCount] = useState(0);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [qrGenerated, setQrGenerated] = useState(false);
   const cert = trustSealCertificate;
 
   const handleAdvanceStep = () => {
@@ -28,10 +31,35 @@ export default function TrustSeal() {
     // If all steps completed, show certificate
     if (activeIndex === steps.length - 1 || newSteps.every(s => s.status === 'completed')) {
       setShowCert(true);
+      setViewCount(1);
     }
   };
 
+  const handleCopyLink = () => {
+    const link = `https://yindun.safe/cert/${cert.verificationCode}`;
+    navigator.clipboard?.writeText(link).then(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    }).catch(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    });
+  };
+
+  const handleQrCode = () => {
+    setQrGenerated(true);
+    setTimeout(() => setQrGenerated(false), 3000);
+  };
+
   const allCompleted = steps.every(s => s.status === 'completed');
+  const certExpired = viewCount >= cert.maxViews;
+
+  // Status labels for cert history
+  const historyStatusMap: Record<string, { label: string; color: string }> = {
+    success: { label: '✅ 认证成功', color: '#4CAF50' },
+    failed: { label: '❌ 认证失败', color: '#E53E3E' },
+    expired: { label: '⏰ 已过期', color: '#FF9800' },
+  };
 
   if (!hasStarted) {
     return (
@@ -144,44 +172,100 @@ export default function TrustSeal() {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: 'spring', damping: 20 }}
           >
-            <div className="cert-preview-header">
-              <div className="cert-stamp">
-                <Stamp />
+            {certExpired ? (
+              /* View-once expired state */
+              <div className="cert-expired-notice">
+                <Lock size={32} />
+                <h3>凭证已查看</h3>
+                <p>该凭证仅可查看 1 次，已达到查看上限。如需再次查看，请重新发起认证。</p>
               </div>
-              <div className="cert-id-info">
-                <div className="cert-id">{cert.id}</div>
-                <div className="cert-time">签发于 {cert.issuedAt}</div>
-              </div>
-            </div>
-
-            <div className="cert-results">
-              {cert.items.map((item, i) => (
-                <motion.div
-                  key={i}
-                  className="cert-result-item"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <div>
-                    <div className="cert-result-label">{item.label}</div>
-                    <div className="cert-result-source">数据来源：{item.source}</div>
+            ) : (
+              <>
+                <div className="cert-preview-header">
+                  <div className="cert-stamp">
+                    <Stamp />
                   </div>
-                  <div className="cert-result-value">✅ {item.result}</div>
-                </motion.div>
-              ))}
-            </div>
+                  <div className="cert-id-info">
+                    <div className="cert-id">{cert.id}</div>
+                    <div className="cert-time">签发于 {cert.issuedAt}</div>
+                  </div>
+                </div>
 
-            <div className="cert-verification-code">
-              <div className="code-label">验证编码</div>
-              <div className="code-value">{cert.verificationCode}</div>
-              <div className="code-tip">
-                <Lock size={12} style={{ display: 'inline', verticalAlign: 'middle' }} /> 可在官网核验 · 链接24小时有效
-              </div>
-            </div>
+                <div className="cert-results">
+                  {cert.items.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      className="cert-result-item"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <div>
+                        <div className="cert-result-label">{item.label}</div>
+                        <div className="cert-result-source">数据来源：{item.source}</div>
+                      </div>
+                      <div className="cert-result-value">✅ {item.result}</div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div className="cert-verification-code">
+                  <div className="code-label">验证编码</div>
+                  <div className="code-value">{cert.verificationCode}</div>
+                  <div className="code-tip">
+                    <Lock size={12} style={{ display: 'inline', verticalAlign: 'middle' }} /> 可在官网核验 · 链接24小时有效 · 仅可查看1次
+                  </div>
+                </div>
+
+                {/* Share Actions */}
+                <div className="cert-share-actions">
+                  <button className="cert-share-btn" onClick={handleCopyLink}>
+                    {linkCopied ? <><CheckCircle size={18} /> 已复制</> : <><Copy size={18} /> 复制链接</>}
+                  </button>
+                  <button className="cert-share-btn" onClick={handleQrCode}>
+                    {qrGenerated ? <><CheckCircle size={18} /> 已生成</> : <><QrCode size={18} /> 生成二维码</>}
+                  </button>
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Cert History */}
+      <motion.section
+        className="cert-history-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <h3 className="cert-history-title">
+          <Clock size={20} /> 认证历史记录
+        </h3>
+        <div className="cert-history-list">
+          {certHistory.map((record, index) => {
+            const statusInfo = historyStatusMap[record.status] || historyStatusMap.success;
+            return (
+              <motion.div
+                key={record.id}
+                className={`cert-history-item ${record.status}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.35 + index * 0.08 }}
+              >
+                <div className="ch-left">
+                  <div className="ch-name">{record.certName}</div>
+                  <div className="ch-time">{record.time}</div>
+                </div>
+                <div className="ch-right">
+                  <span className="ch-status" style={{ color: statusInfo.color }}>{statusInfo.label}</span>
+                  <span className="ch-views">查看 {record.viewCount}/{record.maxViews} 次</span>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.section>
 
       {/* Safety Guarantee */}
       <motion.div

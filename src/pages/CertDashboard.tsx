@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
   ShieldCheck, CreditCard, Shield, IdCard, HeartPulse,
   Banknote, Home, PiggyBank, Users, Trophy, MessageCircle,
-  ArrowRight, FileCheck
+  ArrowRight, FileCheck, SearchCheck, Share2
 } from 'lucide-react';
 import { currentUser, type CertItem } from '../data/mockData';
 import './CertDashboard.css';
@@ -60,6 +60,11 @@ export default function CertDashboard() {
   ].filter(i => i.status === 'verified').length;
 
   const totalCount = user.greenCard.length + user.goldCard.length + user.blueShield.length;
+  const certPercent = Math.round((verifiedCount / totalCount) * 100);
+
+  const handleShare = () => {
+    navigate('/share-cert');
+  };
 
   return (
     <div className="cert-dashboard page-container">
@@ -71,6 +76,28 @@ export default function CertDashboard() {
       >
         <h1>📋 认证看板</h1>
         <p>您的信任资产概览</p>
+      </motion.div>
+
+      {/* Overall Progress */}
+      <motion.div
+        className="cert-overall-progress"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+      >
+        <div className="cop-header">
+          <span className="cop-label">认证完成度</span>
+          <span className="cop-value">{certPercent}%</span>
+        </div>
+        <div className="cop-bar">
+          <motion.div
+            className="cop-bar-fill"
+            initial={{ width: 0 }}
+            animate={{ width: `${certPercent}%` }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+          />
+        </div>
+        <div className="cop-detail">已认证 {verifiedCount} / {totalCount} 项</div>
       </motion.div>
 
       {/* User Profile Card */}
@@ -91,12 +118,18 @@ export default function CertDashboard() {
             {user.certLevel === 'high' ? '信用优秀' : '信用良好'}
           </span>
         </div>
-        <div className="cert-action-row inline">
-          <button className="btn-primary" onClick={() => navigate('/trust-seal')}>
-            <FileCheck size={18} /> 安心印认证
+        <div className="cert-action-row inline" style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%' }}>
+          <button className="btn-outline" onClick={() => navigate('/trust-seal')}>
+            <FileCheck size={16} /> 安心印认证
+          </button>
+          <button className="btn-outline" onClick={() => navigate('/verification-review')}>
+            <SearchCheck size={16} /> 资料审核大厅
+          </button>
+          <button className="btn-outline" onClick={handleShare}>
+            <Share2 size={16} /> 分享认证信息
           </button>
           <button className="btn-outline" onClick={() => navigate('/family-guard')}>
-            子女护航 <ArrowRight size={16} />
+            我的家人 <ArrowRight size={16} />
           </button>
         </div>
       </motion.div>

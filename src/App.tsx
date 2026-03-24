@@ -12,6 +12,14 @@ import FamilyGuard from './pages/FamilyGuard';
 import GreenCard from './pages/GreenCard';
 import GoldCard from './pages/GoldCard';
 import BlueShield from './pages/BlueShield';
+import VerificationReview from './pages/VerificationReview';
+import VoiceCall from './pages/VoiceCall';
+import RiskProfile from './pages/RiskProfile';
+import UserProfile from './pages/UserProfile';
+import SafetyNotifications from './pages/SafetyNotifications';
+import CallRecords from './pages/CallRecords';
+import SafetyCenter from './pages/SafetyCenter';
+import ShareCert from './pages/ShareCert';
 import './App.css';
 
 function AnimatedRoutes() {
@@ -43,6 +51,14 @@ function AnimatedRoutes() {
             <Route path="/green-card" element={<GreenCard />} />
             <Route path="/gold-card" element={<GoldCard />} />
             <Route path="/blue-shield" element={<BlueShield />} />
+            <Route path="/verification-review" element={<VerificationReview />} />
+            <Route path="/voice-call" element={<VoiceCall />} />
+            <Route path="/risk-profile" element={<RiskProfile />} />
+            <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/safety-notifications" element={<SafetyNotifications />} />
+            <Route path="/call-records" element={<CallRecords />} />
+            <Route path="/safety-center" element={<SafetyCenter />} />
+            <Route path="/share-cert" element={<ShareCert />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

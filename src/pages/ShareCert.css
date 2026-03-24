@@ -1,0 +1,76 @@
+.share-cert-page {
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.share-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.share-header h2 {
+  font-size: var(--font-xl);
+  font-weight: bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.share-header .back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.qr-card {
+  background: white;
+  padding: 40px;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  text-align: center;
+  border: 1px solid rgba(255,140,66,0.1);
+  width: 100%;
+  max-width: 340px;
+}
+
+.qr-placeholder {
+  width: 200px;
+  height: 200px;
+  background: rgba(255,140,66,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  border-radius: var(--radius-lg);
+}
+
+.qr-card h3 {
+  font-size: var(--font-lg);
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.qr-card p {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.share-actions {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

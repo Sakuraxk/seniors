@@ -5,7 +5,7 @@ import './NavBar.css';
 const navItems = [
   { path: '/', label: '首页', icon: Home },
   { path: '/cert-dashboard', label: '认证', icon: ShieldCheck },
-  { path: '/chat-risk', label: '消息', icon: MessageCircle },
+  { path: '/chat-risk', label: '聊天', icon: MessageCircle },
   { path: '/family-guard', label: '我的', icon: User },
 ];
 
