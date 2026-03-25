@@ -14,7 +14,18 @@ export default function CallRecords() {
   };
 
   const getEvidence = (recordId: string) => {
-    return evidenceDetails.find(e => e.callRecordId === recordId);
+    const evidence = evidenceDetails.find(e => e.callRecordId === recordId);
+    if (evidence) return evidence;
+    // Fallback if no evidence exists
+    return {
+      callRecordId: recordId,
+      evidenceId: `EV-${new Date().toISOString().replace(/[-:T]/g, '').slice(0, 8)}-000`,
+      encryptionStatus: 'pending' as const,
+      timestamp: '暂无时间',
+      storageExpiry: '暂无期限',
+      canDownload: false,
+      canReport: false
+    };
   };
 
   return (
@@ -27,108 +38,12 @@ export default function CallRecords() {
         <h1 style={{ fontSize: 'var(--font-xl)', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>通话留痕</h1>
       </div>
 
-      <div className="call-list">
-        {callRecords.map((record, index) => {
-          const evidence = getEvidence(record.id);
-          const isExpanded = expandedId === record.id;
-
-          return (
-            <motion.div
-              key={record.id}
-              className={`call-card-wrapper ${record.riskFlag ? 'risk-flagged' : ''}`}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.08 }}
-            >
-              <div className="call-card" onClick={() => record.hasRecording && toggleExpand(record.id)}>
-                <div className="call-avatar">
-                  <PhoneCall />
-                </div>
-                <div className="call-info">
-                  <div className="call-name">{record.contactName}</div>
-                  <div className="call-meta">{record.time} · 时长 {record.duration}</div>
-                </div>
-                <div className="call-badges">
-                  {record.hasRecording && (
-                    <span className="call-badge recorded">
-                      <Mic size={10} /> 已存证
-                    </span>
-                  )}
-                  {record.riskFlag && (
-                    <span className="call-badge risk">⚠ 风险</span>
-                  )}
-                  {record.hasRecording && (
-                    <ChevronDown
-                      size={16}
-                      className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}
-                    />
-                  )}
-                </div>
-              </div>
-
-              {/* Evidence Details Expandable */}
-              <AnimatePresence>
-                {isExpanded && evidence && (
-                  <motion.div
-                    className="evidence-detail"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="evidence-header">
-                      <ShieldCheck size={16} color="#4CAF50" />
-                      <span>存证详情</span>
-                    </div>
-                    <div className="evidence-rows">
-                      <div className="evidence-row">
-                        <span className="ev-label">存证编号</span>
-                        <span className="ev-value">{evidence.evidenceId}</span>
-                      </div>
-                      <div className="evidence-row">
-                        <span className="ev-label">加密状态</span>
-                        <span className={`ev-value ${evidence.encryptionStatus === 'encrypted' ? 'ev-safe' : 'ev-pending'}`}>
-                          <Lock size={12} />
-                          {evidence.encryptionStatus === 'encrypted' ? '已加密' : '加密中'}
-                        </span>
-                      </div>
-                      <div className="evidence-row">
-                        <span className="ev-label">存证时间</span>
-                        <span className="ev-value">{evidence.timestamp}</span>
-                      </div>
-                      <div className="evidence-row">
-                        <span className="ev-label">保存期限</span>
-                        <span className="ev-value">至 {evidence.storageExpiry}</span>
-                      </div>
-                    </div>
-                    <div className="evidence-actions">
-                      <button
-                        className="ev-btn primary"
-                        disabled={!evidence.canReport}
-                      >
-                        <FileText size={16} /> 申请举证
-                      </button>
-                      <button
-                        className="ev-btn secondary"
-                        disabled={!evidence.canDownload}
-                      >
-                        <Download size={16} /> 下载凭证
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
-      </div>
-
       {/* Emergency Quick Actions */}
       <motion.div
         className="emergency-bar"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+        transition={{ delay: 0.1 }}
       >
         <div className="emergency-title">紧急操作</div>
         <div className="emergency-btns">
@@ -146,6 +61,113 @@ export default function CallRecords() {
           </button>
         </div>
       </motion.div>
+
+      <div className="call-list">
+        {callRecords.map((record, index) => {
+          const evidence = getEvidence(record.id);
+          const isExpanded = expandedId === record.id;
+
+          return (
+            <motion.div
+              key={record.id}
+              className={`call-card-wrapper ${record.riskFlag ? 'risk-flagged' : ''}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.08 }}
+            >
+              <div className="call-card" onClick={() => toggleExpand(record.id)}>
+                <div className="call-avatar">
+                  <PhoneCall />
+                </div>
+                <div className="call-info">
+                  <div className="call-name">{record.contactName}</div>
+                  <div className="call-meta">{record.time} · 时长 {record.duration}</div>
+                </div>
+                <div className="call-badges">
+                  {record.hasRecording && (
+                    <span className="call-badge recorded">
+                      <Mic size={10} /> 已存证
+                    </span>
+                  )}
+                  {record.riskFlag && (
+                    <span className="call-badge risk">⚠ 风险</span>
+                  )}
+                  <ChevronDown
+                    size={16}
+                    className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}
+                  />
+                </div>
+              </div>
+
+              {/* Evidence Details Expandable */}
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    className="evidence-detail"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="evidence-header">
+                      <ShieldCheck size={16} color={record.hasRecording ? "#4CAF50" : "#9e9e9e"} />
+                      <span style={{ color: record.hasRecording ? "#4CAF50" : "#9e9e9e" }}>
+                        {record.hasRecording ? '存证详情' : '未开启存证'}
+                      </span>
+                    </div>
+                    
+                    {record.hasRecording ? (
+                      <>
+                        <div className="evidence-rows">
+                          <div className="evidence-row">
+                            <span className="ev-label">存证编号</span>
+                            <span className="ev-value">{evidence.evidenceId}</span>
+                          </div>
+                          <div className="evidence-row">
+                            <span className="ev-label">加密状态</span>
+                            <span className={`ev-value ${evidence.encryptionStatus === 'encrypted' ? 'ev-safe' : 'ev-pending'}`}>
+                              <Lock size={12} />
+                              {evidence.encryptionStatus === 'encrypted' ? '已加密' : '加密中'}
+                            </span>
+                          </div>
+                          <div className="evidence-row">
+                            <span className="ev-label">存证时间</span>
+                            <span className="ev-value">{evidence.timestamp}</span>
+                          </div>
+                          <div className="evidence-row">
+                            <span className="ev-label">保存期限</span>
+                            <span className="ev-value">至 {evidence.storageExpiry}</span>
+                          </div>
+                        </div>
+                        <div className="evidence-actions">
+                          <button
+                            className="ev-btn primary"
+                            disabled={!evidence.canReport}
+                          >
+                            <FileText size={16} /> 申请举证
+                          </button>
+                          <button
+                            className="ev-btn secondary"
+                            disabled={!evidence.canDownload}
+                          >
+                            <Download size={16} /> 下载凭证
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="evidence-rows" style={{ textAlign: 'center', padding: '10px 0', color: 'var(--text-muted)' }}>
+                        此通话未触发风险预警，或您未开启自动录音存证功能，无法查看存证详情。
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+
+
     </div>
   );
 }

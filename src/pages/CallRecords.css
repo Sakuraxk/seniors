@@ -45,6 +45,11 @@
 
 .call-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
 }
 
 .call-name {
@@ -187,7 +192,12 @@
 
 /* Emergency Bar */
 .emergency-bar {
-  margin-top: 28px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-warm);
+  margin: 0 -20px 24px -20px;
+  padding: 10px 20px 24px 20px;
   text-align: center;
 }
 

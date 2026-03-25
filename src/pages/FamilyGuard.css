@@ -540,6 +540,11 @@
 .perm-toggle {
   width: 48px;
   height: 28px;
+  min-width: 48px !important;
+  min-height: 28px !important;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
   border-radius: 14px;
   border: none;
   cursor: pointer;
