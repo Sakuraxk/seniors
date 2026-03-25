@@ -47,7 +47,7 @@
 }
 
 .risk-tab.active {
-  background: white;
+  background: var(--bg-surface);
   color: var(--primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
@@ -59,7 +59,7 @@
   justify-content: space-between;
   padding: 16px 20px;
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--bg-glass);
   border: 1px solid rgba(255, 140, 66, 0.1);
   margin-bottom: 20px;
 }
@@ -107,7 +107,7 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: white;
+  background: var(--bg-surface);
   top: 3px;
   left: 3px;
   transition: transform 0.3s;
@@ -142,7 +142,7 @@
 }
 
 .risk-account-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-glass);
   border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: var(--radius-lg);
   padding: 16px;
@@ -302,7 +302,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: white;
+  background: var(--bg-surface);
   border-radius: var(--radius-md);
   border: 1px solid rgba(0, 0, 0, 0.04);
   transition: all 0.2s;
@@ -416,7 +416,7 @@
 }
 
 .access-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--bg-glass);
   border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: var(--radius-md);
   padding: 16px;
@@ -460,7 +460,7 @@
 
 .violation-card {
   padding: 16px;
-  background: white;
+  background: var(--bg-surface);
   border-radius: var(--radius-md);
   border: 1px solid rgba(0, 0, 0, 0.04);
 }

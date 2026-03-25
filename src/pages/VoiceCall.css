@@ -35,8 +35,8 @@
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-glass);
+  border: 1px solid var(--bg-glass-border);
   color: white;
   font-size: 0.9rem;
   transition: all 0.3s;
@@ -90,7 +90,7 @@
 .activity-ring {
   position: absolute;
   top: -10px; left: -10px; right: -10px; bottom: -10px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid var(--bg-glass-border);
   border-radius: 50%;
   z-index: 1;
 }
@@ -174,7 +174,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-glass);
   transition: all 0.2s;
 }
 
@@ -209,7 +209,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--bg-glass);
   display: flex;
   justify-content: center;
   align-items: center;

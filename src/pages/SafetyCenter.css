@@ -96,7 +96,7 @@
 }
 
 .sc-feature-card {
-  background: white;
+  background: var(--bg-surface);
   border-radius: var(--radius-lg);
   padding: 16px 10px;
   text-align: center;
@@ -145,7 +145,7 @@
   align-items: center;
   gap: 14px;
   padding: 16px 18px;
-  background: white;
+  background: var(--bg-surface);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(0, 0, 0, 0.04);
   cursor: pointer;
@@ -201,7 +201,7 @@
 }
 
 .sc-faq-item {
-  background: white;
+  background: var(--bg-surface);
   border-radius: var(--radius-md);
   border: 1px solid rgba(0, 0, 0, 0.04);
   overflow: hidden;

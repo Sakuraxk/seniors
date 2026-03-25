@@ -14,7 +14,7 @@
 }
 
 .modal-content {
-  background: #ffffff;
+  background: var(--bg-surface);
   border-radius: var(--radius-xl);
   width: 100%;
   max-width: 400px;
@@ -34,7 +34,7 @@
   justify-content: space-between;
   position: sticky;
   top: 0;
-  background: #ffffff;
+  background: var(--bg-surface);
   z-index: 10;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
@@ -182,7 +182,7 @@
 
 .cs-contact-card {
   background: var(--surface-light);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color, rgba(150, 150, 150, 0.2));
   border-radius: var(--radius-lg);
   padding: 16px;
   display: flex;

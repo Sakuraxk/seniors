@@ -4,7 +4,9 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: linear-gradient(160deg, #FFF8F0 0%, #FFF0E0 25%, #FFE4CC 50%, #FFD8B8 75%, #FFCCA0 100%);
+  background: linear-gradient(160deg, var(--bg-warm), var(--bg-warm-2), var(--bg-warm-3), rgba(255, 140, 66, 0.15));
+  background-size: 400% 400%;
+  animation: gradientFlow 15s ease infinite;
 }
 
 /* Warm blobs */
@@ -68,4 +70,21 @@
 @keyframes pf-rays-rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* Theme Icons */
+.pf-theme-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pf-icon-float 20s linear infinite;
+  will-change: transform;
+}
+
+@keyframes pf-icon-float {
+  0% { transform: translateY(0) rotate(0deg) scale(1); }
+  33% { transform: translateY(-30px) rotate(15deg) scale(1.1); }
+  66% { transform: translateY(-15px) rotate(-10deg) scale(0.95); }
+  100% { transform: translateY(0) rotate(0deg) scale(1); }
 }

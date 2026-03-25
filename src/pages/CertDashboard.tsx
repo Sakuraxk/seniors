@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import {
   ShieldCheck, CreditCard, Shield, IdCard, HeartPulse,
   Banknote, Home, PiggyBank, Users, Trophy, MessageCircle,
-  ArrowRight, FileCheck, SearchCheck, Share2
+  FileCheck, SearchCheck, Share2
 } from 'lucide-react';
 import { currentUser, type CertItem } from '../data/mockData';
 import './CertDashboard.css';
@@ -52,6 +53,9 @@ function CertItemRow({ item }: { item: CertItem }) {
 export default function CertDashboard() {
   const navigate = useNavigate();
   const user = currentUser;
+  const [greenListRef] = useAutoAnimate();
+  const [goldListRef] = useAutoAnimate();
+  const [blueListRef] = useAutoAnimate();
 
   const verifiedCount = [
     ...user.greenCard,
@@ -125,11 +129,11 @@ export default function CertDashboard() {
           <button className="btn-outline" onClick={() => navigate('/verification-review')}>
             <SearchCheck size={16} /> 资料审核大厅
           </button>
+          <button className="btn-outline" onClick={() => navigate('/risk-profile')}>
+            <Shield size={16} /> 风险防护
+          </button>
           <button className="btn-outline" onClick={handleShare}>
             <Share2 size={16} /> 分享认证信息
-          </button>
-          <button className="btn-outline" onClick={() => navigate('/family-guard')}>
-            我的家人 <ArrowRight size={16} />
           </button>
         </div>
       </motion.div>
@@ -152,7 +156,7 @@ export default function CertDashboard() {
               <div className="cert-section-subtitle">核验身份真实性和健康状况</div>
             </div>
           </div>
-          <div className="cert-items">
+          <div className="cert-items" ref={greenListRef}>
             {user.greenCard.map(item => (
               <CertItemRow key={item.id} item={item} />
             ))}
@@ -165,6 +169,7 @@ export default function CertDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
+          whileHover={{ boxShadow: '0 8px 32px rgba(245, 166, 35, 0.12)' }}
           onClick={() => navigate('/gold-card')}
           style={{ cursor: 'pointer' }}
         >
@@ -175,7 +180,7 @@ export default function CertDashboard() {
               <div className="cert-section-subtitle">仅显示安全认证标签，不公开具体金额</div>
             </div>
           </div>
-          <div className="cert-items">
+          <div className="cert-items" ref={goldListRef}>
             {user.goldCard.map(item => (
               <CertItemRow key={item.id} item={item} />
             ))}
@@ -188,6 +193,7 @@ export default function CertDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          whileHover={{ boxShadow: '0 8px 32px rgba(33, 150, 243, 0.12)' }}
           onClick={() => navigate('/blue-shield')}
           style={{ cursor: 'pointer' }}
         >
@@ -198,7 +204,7 @@ export default function CertDashboard() {
               <div className="cert-section-subtitle">社交行为与平台信用评估</div>
             </div>
           </div>
-          <div className="cert-items">
+          <div className="cert-items" ref={blueListRef}>
             {user.blueShield.map(item => (
               <CertItemRow key={item.id} item={item} />
             ))}

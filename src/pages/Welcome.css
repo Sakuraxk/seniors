@@ -242,10 +242,10 @@
   gap: 14px;
   padding: 18px 22px;
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--bg-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--bg-glass-border);
   box-shadow: 0 4px 20px rgba(255, 140, 66, 0.08);
   cursor: pointer;
   min-width: 220px;
@@ -331,12 +331,7 @@
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-glass));
   animation: btn-shine-sweep 3.5s ease-in-out infinite;
 }
 

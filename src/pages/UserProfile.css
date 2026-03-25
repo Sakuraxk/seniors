@@ -7,8 +7,8 @@
   flex-direction: column;
   align-items: center;
   padding: 32px 20px 24px;
-  background: white;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color, rgba(150, 150, 150, 0.2));
   box-shadow: 0 4px 12px rgba(255, 140, 66, 0.05);
   position: relative;
 }
@@ -47,7 +47,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   padding: 20px;
-  background: white;
+  background: var(--bg-surface);
   margin-bottom: 16px;
 }
 
@@ -94,7 +94,7 @@
 
 .trust-seal-action {
   grid-column: 1 / -1;
-  background: white;
+  background: var(--bg-surface);
   border: 1px solid #CBD5E1;
   color: var(--text-primary);
 }
@@ -112,10 +112,10 @@
 }
 
 .cert-card-group {
-  background: white;
+  background: var(--bg-surface);
   border-radius: var(--radius-lg);
   padding: 16px;
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid var(--border-color, rgba(150, 150, 150, 0.2));
   box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
@@ -128,7 +128,7 @@
   color: var(--text-primary);
   margin-bottom: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid var(--border-color, rgba(150, 150, 150, 0.2));
 }
 
 .cert-card-item {
@@ -139,7 +139,7 @@
 }
 
 .cert-card-item:not(:last-child) {
-  border-bottom: 1px dashed rgba(0,0,0,0.05);
+  border-bottom: 1px dashed var(--border-color, rgba(150, 150, 150, 0.2));
 }
 
 .cert-card-icon {

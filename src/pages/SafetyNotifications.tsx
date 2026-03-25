@@ -23,7 +23,7 @@ export default function SafetyNotifications() {
     <div className="notifications-page page-container" style={{ minHeight: '100vh', padding: '20px 20px calc(var(--nav-height) + 24px)' }}>
       {/* Header with Back Button */}
       <div className="page-header-nav" style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '12px' }}>
-        <button className="back-btn" onClick={() => navigate(-1)} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+        <button className="back-btn" onClick={() => navigate(-1)} style={{ background: 'var(--bg-surface)', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
           <ChevronLeft size={24} color="var(--text-primary)" />
         </button>
         <h1 style={{ fontSize: 'var(--font-xl)', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>安全通知</h1>

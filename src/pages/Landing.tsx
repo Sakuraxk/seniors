@@ -10,7 +10,9 @@ import {
 } from 'lucide-react';
 import { productHighlights, currentUser, systemAnnouncements, familyGuardians } from '../data/mockData';
 import AnimatedCounter from '../components/AnimatedCounter';
-import GlowCard from '../components/GlowCard';
+import RippleButton from '../components/RippleButton';
+import MagneticButton from '../components/MagneticButton';
+import TiltCard from '../components/TiltCard';
 import './Landing.css';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -114,15 +116,22 @@ export default function Landing() {
             <ShieldPlus />
           </div>
         </div>
-        <h1 className="hero-title">银盾安鉴</h1>
+        <h1 className="hero-title text-reveal">银盾安鉴</h1>
         <p className="hero-subtitle">银发社交安全守护</p>
         <p className="hero-desc">
           权威数据源验证 · 全流程风险预警 · 子女安心护航<br />
           让每一次社交都安心可信
         </p>
-        <button className="btn-primary" onClick={() => navigate('/cert-dashboard')}>
-          立即体验 <ArrowRight size={20} />
-        </button>
+        <div style={{ display: 'inline-block' }}>
+          <MagneticButton>
+            <RippleButton
+              className="btn-primary"
+              onClick={() => navigate('/cert-dashboard')}
+            >
+              立即体验 <ArrowRight size={20} />
+            </RippleButton>
+          </MagneticButton>
+        </div>
       </motion.section>
 
       {/* Safety Status Dashboard Cards */}
@@ -134,7 +143,13 @@ export default function Landing() {
       >
         <h2 className="dashboard-title">🛡️ 安全状态总览</h2>
         <div className="dashboard-cards">
-          <div className="dashboard-card" onClick={() => navigate('/cert-dashboard')}>
+          <motion.div
+            className="dashboard-card card-neu scroll-fade"
+            onClick={() => navigate('/cert-dashboard')}
+            whileHover={{ y: -6, boxShadow: '0 8px 28px rgba(76, 175, 80, 0.18)' }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+          >
             <div className="dc-icon" style={{ background: 'rgba(76, 175, 80, 0.1)', color: '#4CAF50' }}>
               <ShieldCheck size={24} />
             </div>
@@ -143,24 +158,35 @@ export default function Landing() {
             <div className="dc-progress">
               <div className="dc-progress-fill" style={{ width: `${certPercent}%`, background: '#4CAF50' }} />
             </div>
-          </div>
+          </motion.div>
 
-          <div className="dashboard-card">
+          <motion.div
+            className="dashboard-card card-neu scroll-fade"
+            whileHover={{ y: -6, boxShadow: `0 8px 28px ${riskColorMap[riskLevel]}28` }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+          >
             <div className="dc-icon" style={{ background: `${riskColorMap[riskLevel]}18`, color: riskColorMap[riskLevel] }}>
               <ShieldAlert size={24} />
             </div>
             <div className="dc-value" style={{ color: riskColorMap[riskLevel] }}>{riskLabelMap[riskLevel]}</div>
             <div className="dc-label">当前风险等级</div>
             <div className="dc-status-dot" style={{ background: riskColorMap[riskLevel] }} />
-          </div>
+          </motion.div>
 
-          <div className="dashboard-card" onClick={() => navigate('/risk-alert')}>
+          <motion.div
+            className="dashboard-card card-neu scroll-fade"
+            onClick={() => navigate('/risk-alert')}
+            whileHover={{ y: -6, boxShadow: '0 8px 28px rgba(255, 107, 53, 0.18)' }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+          >
             <div className="dc-icon" style={{ background: 'rgba(255, 107, 53, 0.1)', color: '#FF6B35' }}>
               <Lock size={24} />
             </div>
             <div className="dc-value">{todayInterceptions}</div>
             <div className="dc-label">今日风险拦截</div>
-          </div>
+          </motion.div>
         </div>
       </motion.section>
 
@@ -210,6 +236,36 @@ export default function Landing() {
         </div>
       </motion.section>
 
+      {/* Product Highlights */}
+      <section className="highlights-section">
+        <h2 className="highlights-title">五大安全亮点</h2>
+        <motion.div
+          className="highlight-cards"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
+          {productHighlights.map((hl) => {
+            const Icon = iconMap[hl.icon] || ShieldCheck;
+            return (
+              <motion.div
+                className="highlight-card card-neu scroll-fade"
+                key={hl.id}
+                variants={item}
+              >
+                <div className="hl-icon" style={{ background: `linear-gradient(135deg, ${hl.color}, ${hl.color}CC)` }}>
+                  <Icon />
+                </div>
+                <div className="hl-content">
+                  <div className="hl-title">{hl.title}</div>
+                  <div className="hl-desc">{hl.description}</div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </section>
+
       {/* Cert Type Preview Cards */}
       <motion.section
         className="cert-preview-section"
@@ -219,44 +275,41 @@ export default function Landing() {
       >
         <h2 className="cert-preview-title">三大认证体系</h2>
         <div className="cert-cards-row">
-          <GlowCard
-            className="cert-preview-card green-card"
+          <TiltCard
+            className="cert-preview-card green-card glass-card-premium"
             onClick={() => navigate('/cert-dashboard')}
-            delay={0.5}
-            glowColor="rgba(76, 175, 80, 0.2)"
+            style={{ padding: '24px 16px', borderRadius: '16px' }}
           >
             <div className="card-icon green-icon">
               <ShieldCheck />
             </div>
             <div className="card-label green-label">绿卡</div>
             <div className="card-sublabel">身份健康</div>
-          </GlowCard>
+          </TiltCard>
 
-          <GlowCard
-            className="cert-preview-card gold-card"
+          <TiltCard
+            className="cert-preview-card gold-card glass-card-premium"
             onClick={() => navigate('/cert-dashboard')}
-            delay={0.6}
-            glowColor="rgba(245, 166, 35, 0.2)"
+            style={{ padding: '24px 16px', borderRadius: '16px' }}
           >
             <div className="card-icon gold-icon">
               <CreditCard />
             </div>
             <div className="card-label gold-label">金卡</div>
             <div className="card-sublabel">经济底盘</div>
-          </GlowCard>
+          </TiltCard>
 
-          <GlowCard
-            className="cert-preview-card blue-card"
+          <TiltCard
+            className="cert-preview-card blue-card glass-card-premium"
             onClick={() => navigate('/cert-dashboard')}
-            delay={0.7}
-            glowColor="rgba(33, 150, 243, 0.2)"
+            style={{ padding: '24px 16px', borderRadius: '16px' }}
           >
             <div className="card-icon blue-icon">
               <Shield />
             </div>
             <div className="card-label blue-label">蓝盾</div>
             <div className="card-sublabel">社交信用</div>
-          </GlowCard>
+          </TiltCard>
         </div>
       </motion.section>
 
@@ -264,22 +317,46 @@ export default function Landing() {
       <section className="quick-access-section">
         <h2 className="section-title">快捷入口</h2>
         <div className="quick-access-grid">
-          <button className="quick-btn" onClick={() => navigate('/cert-dashboard')}>
+          <motion.button
+            className="quick-btn"
+            onClick={() => navigate('/cert-dashboard')}
+            whileHover={{ y: -5, boxShadow: '0 8px 24px rgba(255, 107, 53, 0.2)' }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+          >
             <ShieldCheck size={28} />
             <span>去认证</span>
-          </button>
-          <button className="quick-btn" onClick={() => navigate('/trust-seal')}>
+          </motion.button>
+          <motion.button
+            className="quick-btn"
+            onClick={() => navigate('/trust-seal')}
+            whileHover={{ y: -5, boxShadow: '0 8px 24px rgba(33, 150, 243, 0.2)' }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+          >
             <FileBadge size={28} />
             <span>安心印</span>
-          </button>
-          <button className="quick-btn" onClick={() => navigate('/safety-center')}>
+          </motion.button>
+          <motion.button
+            className="quick-btn"
+            onClick={() => navigate('/safety-center')}
+            whileHover={{ y: -5, boxShadow: '0 8px 24px rgba(255, 152, 0, 0.2)' }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+          >
             <ShieldAlert size={28} />
             <span>安全中心</span>
-          </button>
-          <button className="quick-btn" onClick={() => navigate('/family-guard')}>
+          </motion.button>
+          <motion.button
+            className="quick-btn"
+            onClick={() => navigate('/family-guard')}
+            whileHover={{ y: -5, boxShadow: '0 8px 24px rgba(233, 30, 99, 0.2)' }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+          >
             <Users size={28} />
             <span>子女护航</span>
-          </button>
+          </motion.button>
         </div>
       </section>
 
@@ -288,7 +365,9 @@ export default function Landing() {
         <h2 className="section-title">核心功能体验</h2>
         <div className="features-grid">
           <motion.div className="feature-nav-card" onClick={() => navigate('/cert-dashboard')}
-            whileHover={{ y: -4, boxShadow: '0 8px 24px rgba(76, 175, 80, 0.15)' }}>
+            whileHover={{ y: -4, boxShadow: '0 8px 24px rgba(76, 175, 80, 0.15)' }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
             <div className="fn-icon" style={{ color: '#4CAF50', backgroundImage: 'linear-gradient(135deg, #e8f5e9, #c8e6c9)' }}>
               <ShieldCheck size={28} />
             </div>
@@ -341,7 +420,7 @@ export default function Landing() {
             <ArrowRight className="fn-arrow" size={20} />
           </motion.div>
 
-          <motion.div className="feature-nav-card" onClick={() => navigate('/voice-call')}
+          <motion.div className="feature-nav-card" onClick={() => navigate('/call-records')}
             whileHover={{ y: -4, boxShadow: '0 8px 24px rgba(0, 188, 212, 0.15)' }}>
             <div className="fn-icon" style={{ color: '#00BCD4', backgroundImage: 'linear-gradient(135deg, #e0f7fa, #b2ebf2)' }}>
               <PhoneCall size={28} />
@@ -370,49 +449,26 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Product Highlights */}
-      <section className="highlights-section">
-        <h2 className="highlights-title">五大安全亮点</h2>
-        <motion.div
-          className="highlight-cards"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          {productHighlights.map((hl) => {
-            const Icon = iconMap[hl.icon] || ShieldCheck;
-            return (
-              <motion.div
-                className="highlight-card"
-                key={hl.id}
-                variants={item}
-              >
-                <div className="hl-icon" style={{ background: `linear-gradient(135deg, ${hl.color}, ${hl.color}CC)` }}>
-                  <Icon />
-                </div>
-                <div className="hl-content">
-                  <div className="hl-title">{hl.title}</div>
-                  <div className="hl-desc">{hl.description}</div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </section>
-
       {/* CTA */}
       <section className="cta-section">
         <motion.div
-          className="cta-card"
+          className="cta-card glass-card-premium scroll-fade"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
           <h3>开启安心社交之旅</h3>
           <p>三步认证，全面守护您的每一次相遇</p>
-          <button className="btn-primary" onClick={() => navigate('/cert-dashboard')}>
-            查看我的认证 <ArrowRight size={20} />
-          </button>
+          <div style={{ display: 'inline-block' }}>
+            <MagneticButton>
+              <RippleButton
+                className="btn-primary"
+                onClick={() => navigate('/cert-dashboard')}
+              >
+                查看我的认证 <ArrowRight size={20} />
+              </RippleButton>
+            </MagneticButton>
+          </div>
         </motion.div>
       </section>
 

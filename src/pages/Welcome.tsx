@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldPlus, ArrowRight, Heart, Users, ShieldCheck, Sparkles } from 'lucide-react';
+import ThemeToggle from '../components/ThemeToggle';
 import './Welcome.css';
 
 const taglines = [
@@ -38,6 +39,7 @@ export default function Welcome() {
 
   return (
     <div className="welcome-page">
+      <ThemeToggle />
       {/* Animated warm background */}
       <div className="welcome-bg">
         <div className="welcome-orb welcome-orb-1" />

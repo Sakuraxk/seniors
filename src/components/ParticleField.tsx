@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Shield, ShieldCheck, Leaf, Heart, Sun, Sparkles } from 'lucide-react';
 import './ParticleField.css';
 
 interface ParticleFieldProps {
@@ -34,6 +35,24 @@ export default function ParticleField({ count = 30, className = '' }: ParticleFi
     []
   );
 
+  const themeIcons = useMemo(() => {
+    const icons = [Shield, ShieldCheck, Leaf, Heart, Sun, Sparkles];
+    return Array.from({ length: 12 }, (_, i) => {
+      const Icon = icons[i % icons.length];
+      const size = 30 + Math.random() * 40; // 30px to 70px
+      return {
+        id: `icon-${i}`,
+        Icon,
+        left: `${5 + Math.random() * 90}%`,
+        top: `${5 + Math.random() * 90}%`,
+        delay: `${Math.random() * 8}s`,
+        duration: `${20 + Math.random() * 15}s`,
+        size,
+        opacity: 0.04 + Math.random() * 0.08,
+      };
+    });
+  }, []);
+
   return (
     <div className={`particle-field ${className}`}>
       {/* Warm gradient blobs */}
@@ -66,6 +85,22 @@ export default function ParticleField({ count = 30, className = '' }: ParticleFi
             opacity: p.opacity,
           }}
         />
+      ))}
+      {/* Theme Icons */}
+      {themeIcons.map((t) => (
+        <div
+          key={t.id}
+          className="pf-theme-icon"
+          style={{
+            left: t.left,
+            top: t.top,
+            animationDelay: t.delay,
+            animationDuration: t.duration,
+            opacity: t.opacity,
+          }}
+        >
+          <t.Icon size={t.size} strokeWidth={1} color="rgba(255, 107, 53, 0.8)" />
+        </div>
       ))}
       {/* Light rays */}
       <div className="pf-rays" />

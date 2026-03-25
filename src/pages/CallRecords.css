@@ -7,7 +7,7 @@
 .call-card-wrapper {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: white;
+  background: var(--bg-surface);
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   transition: all 0.2s ease;
@@ -97,7 +97,7 @@
 
 /* Evidence Detail */
 .evidence-detail {
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--border-color, rgba(150, 150, 150, 0.2));
   padding: 16px;
   background: rgba(76, 175, 80, 0.02);
   overflow: hidden;

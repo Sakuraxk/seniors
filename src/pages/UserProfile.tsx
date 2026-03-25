@@ -116,7 +116,7 @@ export default function UserProfile() {
           if (conv) {
             navigate(`/chat-risk?chatId=${conv.id}`);
           } else {
-            navigate('/chat-risk');
+            navigate(`/chat-risk?userId=${user.id}`);
           }
         }}>
           <MessageCircle size={18} /> 发消息

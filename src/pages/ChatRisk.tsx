@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { toast } from 'react-toastify';
 import { Ban, Flag, Phone, AlertTriangle, ShieldAlert, ChevronLeft, Volume2, PlusCircle, Smile, Search, UserPlus, CheckCircle, ShieldCheck, Award, Shield, X, Headphones, Bell } from 'lucide-react';
 import RiskBanner from '../components/RiskBanner';
 import CertBadge from '../components/CertBadge';
-import { chatMessages, targetUser, zhangAuntie, conversationList, zhangChatMessages, systemMessages, friendsList } from '../data/mockData';
+import { chatMessages, targetUser, conversationList, zhangChatMessages, systemMessages, friendsList } from '../data/mockData';
 import type { ChatMessage } from '../data/mockData';
 import './ChatRisk.css';
 
@@ -17,22 +19,66 @@ const riskLevels = [
 
 const sensitiveWords = ['转账', '借钱', '密码', '银行卡', '投资', '理财', '下载', '加群', '汇款'];
 
+let globalConversations = [...conversationList];
+let globalMessages: Record<string, ChatMessage[]> = {
+  'conv-1': [...chatMessages],
+  'conv-2': [...zhangChatMessages],
+  'conv-3': [...systemMessages],
+};
+
 export default function ChatRisk() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const initialTab = searchParams.get('tab') === 'friends' ? 'friends' : 'messages';
   const initialChatId = searchParams.get('chatId') || null;
   const [activeChatId, setActiveChatId] = useState<string | null>(initialChatId);
-  const [activeTab, setActiveTab] = useState<'messages' | 'friends'>(initialTab);
-  const [inputValue, setInputValue] = useState('');
-  const [localMessages, setLocalMessages] = useState<ChatMessage[]>(chatMessages);
-  const [localZhangMessages, setLocalZhangMessages] = useState<ChatMessage[]>(zhangChatMessages);
 
-  // 用户信息映射
-  const userMap: Record<string, typeof targetUser> = {
-    'conv-1': targetUser,
-    'conv-2': zhangAuntie,
-  };
+  const queryTab = searchParams.get('tab');
+  let activeTab: 'messages' | 'friends' = 'messages';
+  if (queryTab === 'friends' || queryTab === 'messages') {
+    activeTab = queryTab;
+  } else {
+    const savedTab = sessionStorage.getItem('chatActiveTab');
+    activeTab = savedTab === 'friends' ? 'friends' : 'messages';
+  }
+
+  useEffect(() => {
+    sessionStorage.setItem('chatActiveTab', activeTab);
+  }, [activeTab]);
+  const [inputValue, setInputValue] = useState('');
+  const initialUserId = searchParams.get('userId') || null;
+  const [localConversations, setLocalConversations] = useState(globalConversations);
+  const [dynamicMessages, setDynamicMessages] = useState<Record<string, ChatMessage[]>>(globalMessages);
+
+  useEffect(() => {
+    if (initialUserId) {
+      const existingConv = localConversations.find(c => c.targetUserId === initialUserId);
+      if (existingConv) {
+        if (activeChatId !== existingConv.id) setActiveChatId(existingConv.id);
+      } else {
+        const friend = [targetUser, ...friendsList].find(f => f.id === initialUserId);
+        if (friend) {
+          const newConvId = `conv-new-${friend.id}`;
+          const newConv = {
+            id: newConvId,
+            targetUserId: friend.id,
+            targetUserName: friend.name,
+            targetUserAvatar: friend.avatar || friend.name.charAt(0),
+            lastMessage: '',
+            time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+            unreadCount: 0,
+            hasRisk: false,
+          };
+          setLocalConversations(prev => {
+            if (prev.some(c => c.id === newConvId)) return prev;
+            const next = [newConv, ...prev];
+            globalConversations = next;
+            return next;
+          });
+          setActiveChatId(newConvId);
+        }
+      }
+    }
+  }, [initialUserId]);
 
   // 添加好友
   const [showAddFriend, setShowAddFriend] = useState(false);
@@ -59,8 +105,12 @@ export default function ChatRisk() {
     }
   };
 
+  const [convListRef] = useAutoAnimate();
+  const [msgListRef] = useAutoAnimate();
+
   const handleAddFriend = () => {
     setAddSuccess(true);
+    toast.success('🎉 好友请求已发送！', { icon: false });
     setTimeout(() => {
       setShowAddFriend(false);
       setAddSuccess(false);
@@ -75,7 +125,8 @@ export default function ChatRisk() {
     const hasRisk = sensitiveWords.some(w => inputValue.includes(w));
 
     if (hasRisk) {
-      // Show interception modal
+      // Show interception modal + warning toast
+      toast.warning('⚠️ 检测到敏感词汇，请谨慎发送', { icon: false });
       setPendingMessage(inputValue);
       setShowInterceptModal(true);
       return;
@@ -85,6 +136,7 @@ export default function ChatRisk() {
   };
 
   const doSend = (content: string, isRisk: boolean) => {
+    if (!activeChatId) return;
     const newMsg: ChatMessage = {
       id: Date.now().toString(),
       sender: 'self',
@@ -94,11 +146,24 @@ export default function ChatRisk() {
       riskType: isRisk ? '平台预警：涉及敏感词' : undefined,
     };
 
-    if (activeChatId === 'conv-1') {
-      setLocalMessages([...localMessages, newMsg]);
-    } else if (activeChatId === 'conv-2') {
-      setLocalZhangMessages([...localZhangMessages, newMsg]);
-    }
+    setDynamicMessages(prev => {
+      const next = {
+        ...prev,
+        [activeChatId]: [...(prev[activeChatId] || []), newMsg]
+      };
+      globalMessages = next;
+      return next;
+    });
+    
+    setLocalConversations(prev => {
+      const next = prev.map(c => 
+        c.id === activeChatId 
+          ? { ...c, lastMessage: content, time: newMsg.time } 
+          : c
+      );
+      globalConversations = next;
+      return next;
+    });
     setInputValue('');
     setShowInterceptModal(false);
     setPendingMessage('');
@@ -113,12 +178,6 @@ export default function ChatRisk() {
     setPendingMessage('');
   };
 
-  // Check if current chat target is a risk account
-  const isRiskAccount = (chatId: string) => {
-    const conv = conversationList.find(c => c.id === chatId);
-    return conv?.hasRisk || false;
-  };
-
   // ===== Message List View =====
   if (!activeChatId) {
     return (
@@ -131,9 +190,32 @@ export default function ChatRisk() {
           </button>
         </div>
         
-        <div className="conversation-list">
+        <div className="protection-status-banner">
+          <div className="psb-icon"><ShieldAlert size={16} /></div>
+          <span className="psb-text">银盾安鉴实时护航聊天安全</span>
+          <div className="psb-pulse" />
+        </div>
+        
+        <div className="chat-tools-grid">
+          <button 
+            className="chat-tool-btn risk hover-lift" 
+            onClick={() => navigate('/risk-alert')}
+          >
+            <AlertTriangle size={16} />
+            <span>风险雷达</span>
+          </button>
+          <button 
+            className="chat-tool-btn call hover-lift" 
+            onClick={() => navigate('/call-records')}
+          >
+            <Phone size={16} />
+            <span>通话留痕</span>
+          </button>
+        </div>
+        
+        <div className="conversation-list" ref={convListRef}>
           {activeTab === 'messages' ? (
-            conversationList.map((conv, index) => (
+            localConversations.map((conv, index) => (
               <motion.div 
                 key={conv.id}
                 className="conversation-item"
@@ -194,22 +276,6 @@ export default function ChatRisk() {
               </motion.div>
             ))
           )}
-        </div>
-
-        {/* Bottom Tab Switcher */}
-        <div className="bottom-tab-switcher">
-          <button 
-            className={activeTab === 'messages' ? 'active' : ''} 
-            onClick={() => { setActiveTab('messages'); navigate('/chat-risk?tab=messages', { replace: true }); }}
-          >
-            聊天
-          </button>
-          <button 
-            className={activeTab === 'friends' ? 'active' : ''} 
-            onClick={() => { setActiveTab('friends'); navigate('/chat-risk?tab=friends', { replace: true }); }}
-          >
-            好友
-          </button>
         </div>
 
         {/* 添加好友弹窗 */}
@@ -274,7 +340,7 @@ export default function ChatRisk() {
                     {searchResult.isFriend ? (
                       <button 
                         className="do-add-btn" 
-                        style={{ background: '#f5f7f9', color: 'var(--text-secondary)' }}
+                        style={{ background: 'var(--bg-warm-2)', color: 'var(--text-secondary)' }}
                         onClick={() => {
                           setShowAddFriend(false);
                           navigate(`/user-profile?userId=${searchResult.id}`);
@@ -301,24 +367,18 @@ export default function ChatRisk() {
   }
 
   // ===== Chat Room View =====
-  const isTargetChat = activeChatId === 'conv-1';
-  const isZhangChat = activeChatId === 'conv-2';
-  const isSystemChat = activeChatId === 'conv-3';
-  const isUserChat = isTargetChat || isZhangChat; // non-system user chats
+  const activeConv = localConversations.find(c => c.id === activeChatId);
+  const chatMsgs = activeChatId ? (dynamicMessages[activeChatId] || []) : [];
   
-  // 获取当前会话的消息
-  const getChatMessages = () => {
-    if (isTargetChat) return localMessages;
-    if (isZhangChat) return localZhangMessages;
-    if (isSystemChat) return systemMessages;
-    return [];
-  };
-  const chatMsgs = getChatMessages();
+  const isTargetChat = activeChatId === 'conv-1';
+  const isSystemChat = activeConv?.isSystem || false;
+  const isUserChat = !isSystemChat;
   
   const hasHighRisk = chatMsgs.some((m: any) => m.riskLevel === 'high');
-  const activeConv = conversationList.find(c => c.id === activeChatId);
-  const chatIsRiskAccount = isRiskAccount(activeChatId);
-  const chatUser = activeChatId ? userMap[activeChatId] : null;
+  const chatIsRiskAccount = activeConv?.hasRisk || false;
+  
+  const allUsers = [targetUser, ...friendsList];
+  const chatUser = activeConv ? allUsers.find(u => u.id === activeConv.targetUserId) : null;
 
   return (
     <div className="chat-risk-page chat-room-view">
@@ -410,7 +470,7 @@ export default function ChatRisk() {
       )}
 
       {/* Messages */}
-      <div className="chat-messages">
+      <div className="chat-messages" ref={msgListRef}>
         {chatMsgs.map((msg: any, index: number) => (
           <motion.div
             key={msg.id}

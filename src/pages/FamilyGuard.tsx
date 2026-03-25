@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 import {
   Users, Bell, Phone, CircleAlert, X, ChevronRight,
-  UserPlus, Send, ShieldCheck, Eye, AlertTriangle, Check
+  UserPlus, Send, ShieldCheck, Eye, AlertTriangle, Check, ShieldPlus
 } from 'lucide-react';
 import { familyGuardians, currentUser, riskSyncRecords } from '../data/mockData';
 import type { FamilyGuardian, RiskSyncRecord } from '../data/mockData';
@@ -33,6 +34,7 @@ export default function FamilyGuard() {
   const handleSendInvite = () => {
     if (!bindPhone.trim() || bindPhone.length < 11) return;
     setBindSent(true);
+    toast.success('🎉 绑定邀请已发送！', { icon: false });
     setTimeout(() => {
       setBindSent(false);
       setShowBindForm(false);
@@ -142,7 +144,7 @@ export default function FamilyGuard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'white', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255,140,66,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -162,7 +164,7 @@ export default function FamilyGuard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'white', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255,140,66,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -182,7 +184,7 @@ export default function FamilyGuard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'white', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255,140,66,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -191,6 +193,46 @@ export default function FamilyGuard() {
             <div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)' }}>通话留痕</div>
               <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>查看可疑通话记录与风险预警</div>
+            </div>
+          </div>
+          <ChevronRight size={20} color="var(--text-muted)" />
+        </motion.div>
+
+        <motion.div
+          className="nav-btn-card clickable-card"
+          onClick={() => navigate('/cert-dashboard')}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255,140,66,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ShieldCheck size={20} />
+            </div>
+            <div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)' }}>认证中心</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>管理三大安全认证，全方位展示真实背景</div>
+            </div>
+          </div>
+          <ChevronRight size={20} color="var(--text-muted)" />
+        </motion.div>
+
+        <motion.div
+          className="nav-btn-card clickable-card"
+          onClick={() => navigate('/safety-center')}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(255,140,66,0.1)' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255,140,66,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ShieldPlus size={20} />
+            </div>
+            <div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)' }}>安全中心</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>汇总所有安全功能、常见问题和客服支持</div>
             </div>
           </div>
           <ChevronRight size={20} color="var(--text-muted)" />
@@ -204,9 +246,15 @@ export default function FamilyGuard() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.6 }}
       >
-        <button className="sos-btn">
+        <motion.button
+          className="sos-btn"
+          whileTap={{ scale: 0.85 }}
+          whileHover={{ scale: 1.1, boxShadow: '0 0 40px rgba(229, 62, 62, 0.4)' }}
+          transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+          onClick={() => toast.error('🚨 紧急求助已发送至所有绑定家人！', { icon: false, autoClose: 5000 })}
+        >
           <CircleAlert />
-        </button>
+        </motion.button>
         <div className="sos-label">一键求助</div>
         <div className="sos-desc">紧急情况下一键通知所有绑定家人</div>
       </motion.div>
@@ -393,8 +441,8 @@ export default function FamilyGuard() {
                     transition={{ delay: 0.1 + index * 0.05 }}
                     style={{ marginBottom: '12px', padding: '16px', borderRadius: '12px', border: '1px solid #eee', background: record.isHandled ? '#fdfdfd' : '#fff5f5' }}
                   >
-                    <div className="sync-content" style={{ fontSize: '15px', color: '#333', marginBottom: '8px', fontWeight: 500 }}>{record.content}</div>
-                    <div className="sync-meta" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#888', marginBottom: '12px' }}>
+                    <div className="sync-content" style={{ fontSize: '15px', color: 'var(--text-primary)', marginBottom: '8px', fontWeight: 500 }}>{record.content}</div>
+                    <div className="sync-meta" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '12px' }}>
                       <span className="sync-time">{record.time}</span>
                       <span className="sync-to">→ {record.notifiedTo}</span>
                     </div>
@@ -405,7 +453,7 @@ export default function FamilyGuard() {
                       {record.isHandled && <ChevronRight size={16} color="#ccc" />}
                     </div>
                     {!record.isHandled && (
-                      <div style={{ marginTop: '12px', fontSize: '13px', color: '#666', background: '#ffecec', padding: '8px 12px', borderRadius: '6px' }}>
+                      <div style={{ marginTop: '12px', fontSize: '13px', color: 'var(--text-secondary)', background: 'rgba(229, 62, 62, 0.1)', padding: '8px 12px', borderRadius: '6px' }}>
                         家人正在处理中，请耐心等待或主动联系 {record.notifiedTo.split('（')[0]}。
                       </div>
                     )}
@@ -430,8 +478,8 @@ export default function FamilyGuard() {
                 <div style={{ width: '50px', height: '50px', background: '#e8f5e9', color: '#4CAF50', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
                   <ShieldCheck size={28} />
                 </div>
-                <h3 style={{ margin: 0, color: '#333' }}>风险已阻断</h3>
-                <p style={{ margin: '5px 0 0', color: '#666', fontSize: '14px' }}>家人已介入处理该风险</p>
+                <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>风险已阻断</h3>
+                <p style={{ margin: '5px 0 0', color: 'var(--text-secondary)', fontSize: '14px' }}>家人已介入处理该风险</p>
               </div>
               <div className="report-details-list">
                 <div className="report-detail-item">
